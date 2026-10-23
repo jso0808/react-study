@@ -27,7 +27,7 @@ function Nav(props) {
     lis.push(<li key={t.id}>
       <a id={t.id} href={'/read/'+t.id} onClick={event => {
           event.preventDefault();
-          props.onChangeMode(event.target.id); // event.target은 이벤트 유발시킨 대상. 여기서는 <a>
+          props.onChangeMode(Number(event.target.id)); // event.target은 이벤트 유발시킨 대상. 여기서는 <a>
       }}>{t.title}</a></li>);
   }
   return <nav>
@@ -52,7 +52,14 @@ function App() {
   if(mode === 'WELCOME') {
       content = <Article title="Welcome" body="Hello, WEB"></Article>
   } else {
-      content = <Article title="Read" body="Hello, Read"></Article>
+      let title, body = null;
+      for(let i=0; i<topics.length; i++) {
+          if(topics[i].id === id) { // 태그 속성의 데이터는 문자열로 인식
+            title = topics[i].title;
+            body = topics[i].body;
+          }
+      }
+      content = <Article title={title} body={body}></Article>
   }
 
   return (
